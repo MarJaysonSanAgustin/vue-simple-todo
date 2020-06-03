@@ -1,10 +1,9 @@
-<template>
-    <div>
-        <input class="todo-checkbox" v-bind:id="'item_' + todoItem.id" v-model="todoItem.done" type="checkbox">
-        <label v-bind:for="'item_' + todoItem.id"></label>
-        <span class="todo-text">{{ todoItem.title }}</span>
-        <span class="delete" @click="deleteItem()"></span>
-    </div>
+<template lang="pug">
+  div
+    input.todo-checkbox(type='checkbox' v-bind:id="'item_' + todoItem.id" v-model="todoItem.done")
+    label(v-bind:for="'item_' + todoItem.id")
+    span.todo-text {{ todoItem.title }}
+    span.delete(@click="deleteItem()")
 </template>
 
 <script>
@@ -13,7 +12,6 @@ export default {
   props: ['todoItem'],
   methods: {
     deleteItem () {
-      console.log(this.todoItem);
       this.$emit('todoItemDeleted', this.todoItem);
     }
   }
