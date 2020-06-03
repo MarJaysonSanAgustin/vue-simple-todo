@@ -1,57 +1,40 @@
-<template>
-  <section class="todo-wrapper">
+<template lang="pug">
+  section.todo-wrapper
 
-    <TodoHeader title="League Sure Win Tasks" />
+    TodoHeader(title="League Sure Win Tasks")
 
-    <form @keydown.enter.prevent="">
-      <input
-        type="text"
-        class="input-todo"
-        placeholder="Push Mid"
-        v-model="newTodo"
-        v-on:keyup.enter="addItem"
-        v-bind:class="{ active: newTodo }"
-      >
-      <div class="btn btn-add" v-bind:class="{ active: newTodo }"  @click="addItem">+</div>
-    </form>
+    form(@keydown.enter.prevent="")
+      input.input-todo(type="text" placeholder="Push Mid" v-model="newTodo" v-on:keyup.enter="addItem" v-bind:class="{ active: newTodo }")
+      div.btn.btn-add(v-bind:class="{ active: newTodo }"  @click="addItem") +
 
-    <div v-if="pending.length > 0">
-      <p class="status busy">You have {{ pending.length }} pending item<span v-if="pending.length>1">s</span></p>
+    div(v-if="pending.length > 0")
+      p.status.busy
+        span You have {{ pending.length }} pending item
+        span(v-if="pending.length>1") s
 
-      <transition-group name="todo-item" tag="ul" class="todo-list">
-        <li v-for="item in pending" v-bind:key="item.title">
-          <TodoItem :todoItem="item" @todoItemDeleted="deleteItem"/>
-        </li>
-      </transition-group>
+      transition-group.todo-list(name="todo-item" tag="ul")
+        li(v-for="item in pending" v-bind:key="item.title")
+          TodoItem(:todoItem="item" @todoItemDeleted="deleteItem")
 
-    </div>
+    transition(name="slide-fade")
+      p.status.free(v-if="!pending.length")
+        img(src="../assets/ez.png" alt="celebration")
+        span Chillin' Like a Villain.
 
-    <transition name="slide-fade">
-      <p class="status free" v-if="!pending.length" ><img src="../assets/ez.png" alt="celebration">Chillin' Like a Villain.</p>
-    </transition>
+    div(v-if="completed.length > 0 && showComplete")
+      p.status Completed tasks: {{ completedPercentage }}
 
-    <div v-if="completed.length > 0 && showComplete">
+      transition-group.todo-list.archived(name="todo-item" tag="ul")
+        li(v-for="item in completed" v-bind:key="item.title")
+          TodoItem(:todoItem="item" @todoItemDeleted="deleteItem")
 
-      <p class="status">Completed tasks: {{ completedPercentage }}</p>
+    div.control-buttons
+      div.btn.btn-secondary(v-if="completed.length > 0" @click="toggleShowComplete")
+        span(v-if="!showComplete") Show
+        span(v-else) Hide
+        span Complete
 
-      <transition-group name="todo-item" tag="ul" class="todo-list archived">
-        <li v-for="item in completed" v-bind:key="item.title">
-          <TodoItem :todoItem="item" @todoItemDeleted="deleteItem"/>
-        </li>
-      </transition-group>
-
-    </div>
-
-    <div class="control-buttons">
-
-      <div class="btn btn-secondary" v-if="completed.length > 0" @click="toggleShowComplete"><span v-if="!showComplete">Show</span><span v-else>Hide</span> Complete</div>
-
-      <div class="btn btn-secondary" v-if="todoList.length > 0" @click="clearAll">Clear All</div>
-
-    </div>
-
-  </section>
-
+      div.btn.btn-secondary(v-if="todoList.length > 0" @click="clearAll") Clear All
 </template>
 
 <script>
@@ -66,16 +49,7 @@ export default {
   },
   data () {
     return {
-      todoList: [
-        { id: 0, title: 'Leash', done: false },
-        { id: 1, title: 'Farm Monsters', done: false },
-        { id: 2, title: 'Gank Top', done: false },
-        { id: 3, title: 'Funnel', done: false },
-        { id: 4, title: 'Kill Rift Herald', done: false },
-        { id: 5, title: 'Kill Mountain Drake', done: false },
-        { id: 6, title: 'Achieve 100 CS', done: false },
-        { id: 7, title: 'GG', done: false }
-      ],
+      todoList: [],
       newTodo: '',
       showComplete: false
     };
