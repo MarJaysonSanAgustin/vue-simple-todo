@@ -1,7 +1,8 @@
-<template>
-    <div>
-        <h2 class="todo-title">{{ title }} <br> <small>{{ today.day }} - {{ today.date }}</small></h2>
-    </div>
+<template lang="pug">
+  div
+    h2.todo-title {{ title }}
+      br
+      small {{ today.day }} - {{ today.date }}
 </template>
 
 <script>
