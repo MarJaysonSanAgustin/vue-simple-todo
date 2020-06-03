@@ -32,7 +32,7 @@
       div.btn.btn-secondary(v-if="completed.length > 0" @click="toggleShowComplete")
         span(v-if="!showComplete") Show
         span(v-else) Hide
-        span Complete
+        span  Complete
 
       div.btn.btn-secondary(v-if="todoList.length > 0" @click="clearAll") Clear All
 </template>
